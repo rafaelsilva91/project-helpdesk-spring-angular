@@ -1,21 +1,38 @@
 package com.rafaelsilva91.dev.helpdesk.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rafaelsilva91.dev.helpdesk.domain.enums.PrioridadeEnum;
 import com.rafaelsilva91.dev.helpdesk.domain.enums.StatusEnum;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Chamado {
+@Entity
+public class Chamado implements Serializable {
 
+    private static final long serialVersionUID = -6960725282916705621L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataAbertura = LocalDate.now();
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFechamento;
     private PrioridadeEnum prioridade;
     private StatusEnum status;
     private String titulo;
     private String observacoes;
 
+    @ManyToOne
+    @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     public Chamado() {
