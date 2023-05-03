@@ -2,6 +2,7 @@ package com.rafaelsilva91.dev.helpdesk.controllers;
 
 import com.rafaelsilva91.dev.helpdesk.domain.Cliente;
 import com.rafaelsilva91.dev.helpdesk.domain.Tecnico;
+import com.rafaelsilva91.dev.helpdesk.domain.dtos.TecnicoDto;
 import com.rafaelsilva91.dev.helpdesk.services.TecnicoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,16 @@ public class TecnicoController {
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Tecnico> findById(@PathVariable Integer id){
-        Tecnico obj = this.service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<TecnicoDto> findById(@PathVariable Integer id){
+        Tecnico tecnico = this.service.findById(id);
+        return ResponseEntity.ok().body(new TecnicoDto(tecnico));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Tecnico>> findAll(){
-        List<Tecnico> list = service.findAll();
-        return ResponseEntity.ok().body(list);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<TecnicoDto>> findAll(){
+//        List<Tecnico> list = service.findAll();
+//        return ResponseEntity.ok().body(list);
+//    }
 
 
 }
