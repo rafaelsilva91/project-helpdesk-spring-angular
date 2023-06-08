@@ -1,7 +1,5 @@
 package com.rafaelsilva91.dev.helpdesk.domain.enums;
 
-import org.springframework.util.StringUtils;
-
 public enum PerfilEnum {
 
     ADMIN(0, "ROLE_ADMIN"),
