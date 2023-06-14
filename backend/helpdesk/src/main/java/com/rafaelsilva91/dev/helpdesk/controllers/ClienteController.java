@@ -1,12 +1,17 @@
 package com.rafaelsilva91.dev.helpdesk.controllers;
 
 import com.rafaelsilva91.dev.helpdesk.domain.Cliente;
+import com.rafaelsilva91.dev.helpdesk.domain.Tecnico;
 import com.rafaelsilva91.dev.helpdesk.domain.dtos.ClienteDto;
+import com.rafaelsilva91.dev.helpdesk.domain.dtos.TecnicoDto;
 import com.rafaelsilva91.dev.helpdesk.services.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,4 +38,29 @@ public class ClienteController {
         List<ClienteDto> listDTO = list.stream().map(obj -> new ClienteDto(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
     }
+
+    @PostMapping
+    public ResponseEntity<ClienteDto> create(@Valid @RequestBody ClienteDto request){
+        Cliente cliente = service.create(request);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(cliente.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ClienteDto> update(@PathVariable Integer id, @Valid @RequestBody ClienteDto request){
+        Cliente cliente = service.update(id, request);
+        return ResponseEntity.ok().body(new ClienteDto(cliente));
+
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

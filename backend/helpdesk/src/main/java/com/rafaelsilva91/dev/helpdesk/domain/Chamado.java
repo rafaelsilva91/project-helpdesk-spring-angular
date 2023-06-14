@@ -1,6 +1,7 @@
 package com.rafaelsilva91.dev.helpdesk.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.rafaelsilva91.dev.helpdesk.domain.dtos.ChamadoDTO;
 import com.rafaelsilva91.dev.helpdesk.domain.enums.PrioridadeEnum;
 import com.rafaelsilva91.dev.helpdesk.domain.enums.StatusEnum;
 
@@ -47,6 +48,14 @@ public class Chamado implements Serializable {
         this.observacoes = observacoes;
         this.tecnico = tecnico;
         this.cliente = cliente;
+    }
+
+    public Chamado(ChamadoDTO objDTO) {
+        this.id = objDTO.getId();
+        this.prioridade = PrioridadeEnum.toEnum(objDTO.getPrioridade());
+        this.status = StatusEnum.toEnum(objDTO.getStatus());
+        this.titulo = objDTO.getTitulo();
+        this.observacoes = objDTO.getObservacoes();
     }
 
     public Integer getId() {

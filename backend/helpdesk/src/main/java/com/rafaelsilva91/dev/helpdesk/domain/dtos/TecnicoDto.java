@@ -5,6 +5,7 @@ import com.rafaelsilva91.dev.helpdesk.domain.Tecnico;
 import com.rafaelsilva91.dev.helpdesk.domain.enums.PerfilEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -13,17 +14,30 @@ import java.util.stream.Collectors;
 
 public class TecnicoDto implements Serializable {
 
-    private static final long serialVersionUID = -999933984721072759L;
+    private static final long serialVersionUID = 1L;
 
     protected Integer id;
+
+    @NotNull(message = "O campo NOME é requerido")
     protected String nome;
+
+    @NotNull(message = "O campo CPF é requerido")
     protected String cpf;
+
+    @NotNull(message = "O campo EMAIL é requerido")
     protected String email;
+
+    @NotNull(message = "O campo SENHA é requerido")
     protected String senha;
     protected Set<Integer> perfis = new HashSet<>();
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dataCriacao = LocalDate.now();
+
+    public TecnicoDto() {
+        super();
+        addPerfil(PerfilEnum.CLIENTE);
+    }
 
     public TecnicoDto(Tecnico obj) {
         this.id = obj.getId();
@@ -33,6 +47,7 @@ public class TecnicoDto implements Serializable {
         this.senha = obj.getSenha();
         this.perfis = obj.getPerfis().stream().map(x->x.getCodigo()).collect(Collectors.toSet());
         this.dataCriacao = obj.getDataCriacao();
+        addPerfil(PerfilEnum.CLIENTE);
     }
 
     public Integer getId() {
